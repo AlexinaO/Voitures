@@ -132,7 +132,22 @@ namespace Voitures
 
         private static void SupprimerMarque()
         {
+            Console.WriteLine();
+            Console.WriteLine(">SUPPRESSION D'UNE MARQUE");
 
+            var idMarque = ChoisirMarque();
+
+            using (var connexion = CreerConnexion())
+            {
+                connexion.Open();
+
+                var commande = connexion.CreateCommand();
+                commande.CommandText =
+                    "DELETE Marques WHERE Id = @IdMarque";
+                commande.Parameters.AddWithValue("@IdMarque", idMarque);
+
+                commande.ExecuteNonQuery();
+            }
         }
 
         private static int AfficherMenu()
