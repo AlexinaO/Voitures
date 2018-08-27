@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -121,7 +122,7 @@ namespace Voitures
             connexion.Open();
 
             var commande = connexion.CreateCommand();
-            commande.CommandText = 
+            commande.CommandText =
                 "INSERT INTO Marques (Nom) VALUES(@NomMarque)";
             commande.Parameters.AddWithValue("@NomMarque", nomMarque);
 
@@ -142,8 +143,8 @@ namespace Voitures
                 connexion.Open();
 
                 var commande = connexion.CreateCommand();
-                commande.CommandText =
-                    "DELETE Marques WHERE Id = @IdMarque";
+                commande.CommandText = "SupprimerMarque";
+                commande.CommandType = CommandType.StoredProcedure;
                 commande.Parameters.AddWithValue("@IdMarque", idMarque);
 
                 commande.ExecuteNonQuery();
