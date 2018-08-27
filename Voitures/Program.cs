@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -25,10 +26,14 @@ namespace Voitures
                         break;
 
                     case 2:
-                        CreerMarque();
+                        AfficherMarques();
                         break;
 
                     case 3:
+                        CreerMarque();
+                        break;
+
+                    case 4:
                         SupprimerMarque();
                         break;
 
@@ -43,6 +48,14 @@ namespace Voitures
         }
 
         private static int ChoisirMarque()
+        {
+            AfficherMarques();
+
+            Console.WriteLine("Quelle marque (Id)?");
+            return int.Parse(Console.ReadLine());
+        }
+
+        private static void AfficherMarques()
         {
             Console.WriteLine();
             Console.WriteLine("> MARQUES");
@@ -65,9 +78,6 @@ namespace Voitures
             }
 
             connexion.Close();
-
-            Console.WriteLine("Quelle marque (Id)?");
-            return int.Parse(Console.ReadLine());
         }
 
         private static void AfficherModeles(int idMarque)
@@ -102,12 +112,43 @@ namespace Voitures
 
         private static void CreerMarque()
         {
+            Console.WriteLine();
+            Console.WriteLine(">NOUVELLE MARQUE");
 
+            Console.Write("Nom de la marque: ");
+            var nomMarque = Console.ReadLine();
+
+            var connexion = CreerConnexion();
+            connexion.Open();
+
+            var commande = connexion.CreateCommand();
+            commande.CommandText =
+                "INSERT INTO Marques (Nom) VALUES(@NomMarque)";
+            commande.Parameters.AddWithValue("@NomMarque", nomMarque);
+
+            commande.ExecuteNonQuery();
+
+            connexion.Close();
         }
 
         private static void SupprimerMarque()
         {
+            Console.WriteLine();
+            Console.WriteLine(">SUPPRESSION D'UNE MARQUE");
 
+            var idMarque = ChoisirMarque();
+
+            using (var connexion = CreerConnexion())
+            {
+                connexion.Open();
+
+                var commande = connexion.CreateCommand();
+                commande.CommandText = "SupprimerMarque";
+                commande.CommandType = CommandType.StoredProcedure;
+                commande.Parameters.AddWithValue("@IdMarque", idMarque);
+
+                commande.ExecuteNonQuery();
+            }
         }
 
         private static int AfficherMenu()
@@ -115,8 +156,9 @@ namespace Voitures
             Console.Clear();
 
             Console.WriteLine("1. Afficher les modèles");
-            Console.WriteLine("2. Créer une marque");
-            Console.WriteLine("3. Supprimer une marque");
+            Console.WriteLine("2. Afficher les marques");
+            Console.WriteLine("3. Créer une marque");
+            Console.WriteLine("4. Supprimer une marque");
             Console.WriteLine("9. Quitter");
 
             Console.Write("Votre choix: ");
