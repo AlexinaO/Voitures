@@ -14,14 +14,43 @@ namespace Voitures
             Console.WriteLine("VOITURES");
             Console.WriteLine();
 
-            int idMarque = ChoisirMarque();
-            AfficherModeles(idMarque);
+            while (true)
+            {
+                var choix = AfficherMenu();
+                switch (choix)
+                {
+                    case 1:
+                        int idMarque = ChoisirMarque();
+                        AfficherModeles(idMarque);
+                        break;
 
-            Console.ReadKey();
+                    case 2:
+                        AfficherSegments();
+                        break;
+
+                    case 3:
+                        CreerMarque();
+                        break;
+
+                    case 4:
+                        SupprimerMarque();
+                        break;
+
+                    case 9:
+                        Environment.Exit(0);
+                        break;
+                }
+
+                Console.WriteLine("Appuyez pour retourner au menu...");
+                Console.ReadKey();
+            }
         }
 
         private static int ChoisirMarque()
         {
+            Console.WriteLine();
+            Console.WriteLine("> MARQUES");
+
             var connexion = CreerConnexion();
             connexion.Open();
 
@@ -47,8 +76,8 @@ namespace Voitures
 
         private static void AfficherModeles(int idMarque)
         {
-            Console.WriteLine("Modèles");
             Console.WriteLine();
+            Console.WriteLine("> MODELES");
 
             var connexion = CreerConnexion();
             connexion.Open();
@@ -73,6 +102,35 @@ namespace Voitures
             }
 
             connexion.Close();
+        }
+
+        private static void AfficherSegments()
+        {
+
+        }
+
+        private static void CreerMarque()
+        {
+
+        }
+
+        private static void SupprimerMarque()
+        {
+
+        }
+
+        private static int AfficherMenu()
+        {
+            Console.Clear();
+
+            Console.WriteLine("1. Afficher les modèles");
+            Console.WriteLine("2. Afficher les segments");
+            Console.WriteLine("3. Créer une marque");
+            Console.WriteLine("4. Supprimer une marque");
+            Console.WriteLine("9. Quitter");
+
+            Console.Write("Votre choix: ");
+            return int.Parse(Console.ReadLine());
         }
 
         static SqlConnection CreerConnexion()
