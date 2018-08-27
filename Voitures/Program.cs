@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -167,7 +168,9 @@ namespace Voitures
 
         static SqlConnection CreerConnexion()
         {
-            var chaineConnexion = "Server=.;Database=Voitures;Trusted_Connection=True;";
+            var chaineConnexion = ConfigurationManager
+                                    .ConnectionStrings["ConnexionBD"]
+                                    .ConnectionString;
             return new SqlConnection(chaineConnexion);
         }
     }
