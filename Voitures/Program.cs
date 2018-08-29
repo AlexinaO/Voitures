@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
 
 namespace Voitures
 {
@@ -168,7 +168,9 @@ namespace Voitures
 
         static SqlConnection CreerConnexion()
         {
-            var chaineConnexion = ConfigurationManager.ConnectionStrings["ConnexionBD"].ConnectionString;
+            var chaineConnexion = ConfigurationManager
+                                    .ConnectionStrings["ConnexionBD"]
+                                    .ConnectionString;
             return new SqlConnection(chaineConnexion);
         }
     }
